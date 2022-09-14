@@ -74,3 +74,27 @@ pd.DataFrame(X).head()
 
 pd.DataFrame(X).info()
 
+def baseline_model():
+    # create model
+    model = Sequential()
+    # Rectified Linear Unit Activation Function
+    model.add(Dense(16, input_dim=8, activation='relu'))
+    model.add(Dense(16, activation='relu'))
+    # Softmax for multi-class classification
+    model.add(Dense(7, activation='softmax'))
+    # Compile model
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam', metrics=['accuracy'])
+    return model
+
+model = baseline_model()
+model.compile(loss='binary_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+history = model.fit(X, hot_y, validation_split=0.33,
+                    epochs=200, batch_size=100, verbose=0)
+
+_, accuracy = model.evaluate(X, hot_y)
+print('Accuracy: %.2f' % (accuracy*100))
+
